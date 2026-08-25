@@ -1,12 +1,13 @@
 # Red Prince APWorld
 
+## Project Repositories
+
+- [Releases and Setup](https://github.com/Tincancrafter/Red-Prince-Releases)
+- **[APWorld Source](https://github.com/Tincancrafter/Red-Prince-APWorld)** (you are here)
+- [Game Mod Source](https://github.com/Tincancrafter/Red-Prince-Game-Mod)
+
 This repository contains the Archipelago world source for the unofficial Red
 Prince integration for Blue Prince.
-
-The game-mod source is maintained in
-[Red-Prince-Game-Mod](https://github.com/Tincancrafter/Red-Prince-Game-Mod).
-Ready-to-use `.apworld`, YAML, and game-mod packages are published by
-[Red-Prince-Releases](https://github.com/Tincancrafter/Red-Prince-Releases/releases).
 
 ## Development
 
