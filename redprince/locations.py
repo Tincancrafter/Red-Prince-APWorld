@@ -5,8 +5,7 @@ import warnings
 from typing import TYPE_CHECKING, List, Optional
 from rule_builder.rules import *
 
-from BaseClasses import CollectionState, ItemClassification, Location, LocationProgressType, Region, Region
-from worlds.blueprince import world
+from BaseClasses import CollectionState, ItemClassification, Location, LocationProgressType, Region
 from .rules import *
 
 from .options import GoalType, ItemLogicMode
@@ -18,6 +17,10 @@ from .data_rooms import rooms, blue_rooms, core_rooms
 from .data_items import armory_items
 from .data_other_locations import locations, keys, floorplans, shop_items, trophies, sanctum_keys, aries_court_mora_jai_boxes, upgrade_disks, workshop_contraptions
 from .items import RedPrinceItem
+
+EXCLUDED_PROGRESSION_LOCATIONS = {
+    "Upgrade Disk - Garage",
+}
 
 if TYPE_CHECKING:
     from .world import RedPrinceWorld
@@ -246,6 +249,9 @@ def create_regular_locations(world: RedPrinceWorld) -> None:
         locs = get_location_names_with_ids([location_key])
         world.get_region(v[LOCATION_ROOM_KEY]).add_locations(locs, RedPrinceLocation)
         locations_to_setup[location_key] = get_location_rule(location_key)
+
+    for location_name in EXCLUDED_PROGRESSION_LOCATIONS:
+        world.get_location(location_name).progress_type = LocationProgressType.EXCLUDED
 
     for location_key, rule in locations_to_setup.items():
         world.set_rule(world.get_location(location_key), rule)

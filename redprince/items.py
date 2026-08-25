@@ -96,6 +96,23 @@ ITEM_NAME_TO_ID = (
     | {k: v[ITEM_ID_KEY] * 1_000_000 for k, v in all_items.items()}
 )
 
+# These rooms have additional parent-room or progression requirements beyond a
+# normal Entrance Hall draft. Precollecting one as a starting room can leave the
+# player with fewer usable opening rooms than requested.
+STARTING_ROOM_EXCLUSIONS = {
+    "Boiler Room",
+    "Freezer",
+    "Gift Shop",
+    "Her Ladyship's Chamber",
+    "Locker Room",
+    "Morning Room",
+    "Pump Room",
+    "Sauna",
+    "The Armory",
+    "Throne Room",
+    "Trophy Room",
+}
+
 
 DEFAULT_ITEM_CLASSIFICATIONS = (
     {
@@ -450,7 +467,8 @@ def create_all_items(world: RedPrinceWorld) -> None:
         valid_rooms = [room for room in room_item_list 
                                                     if ROOM_PICK_POSITIONS_KEY in rooms[room.name] 
                                                     and (set(rooms[room.name][ROOM_PICK_POSITIONS_KEY]) & ENTRANCE_HALL_DRAFTABLE) 
-                                                    and room.name not in ["Sauna", "Pump Room", "Closet"] 
+                                                    and room.name not in STARTING_ROOM_EXCLUSIONS
+                                                    and room.name != "Closet"
                                                     and not (room.name in ["Treasure Trove", "Gift Shop"] and world.options.goal_type.value <= 1)
                                                     and not (world.options.trophy_sanity == False and world.options.goal_type.value <= 1 and room.name == "Trophy Room")]
         world.starting_rooms = world.random.sample(valid_rooms,

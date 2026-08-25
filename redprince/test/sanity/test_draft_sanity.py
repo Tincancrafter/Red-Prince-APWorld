@@ -9,6 +9,7 @@ from ...options import GoalType
 from ...test import RedPrinceTestBase
 from ...data_rooms import rooms, core_rooms
 from ... import data_rooms, data_other_locations
+from ...items import STARTING_ROOM_EXCLUSIONS
 
 class TestDraftSanity(RedPrinceTestBase):
     options = {
@@ -28,6 +29,13 @@ class TestDraftSanity(RedPrinceTestBase):
             counts[room] = counts.get(room, 0) + 1
         for room, count in counts.items():
             self.assertEqual(count, 1, f"Starting room {room} appears {count} times, but should only appear once")
+
+    def test_starting_rooms_are_immediately_draftable(self) -> None:
+        starting_room_names = {room.name for room in self.multiworld.worlds[self.player].starting_rooms}
+        self.assertFalse(
+            starting_room_names & STARTING_ROOM_EXCLUSIONS,
+            f"Starting rooms include gated rooms: {starting_room_names & STARTING_ROOM_EXCLUSIONS}",
+        )
 
     def test_room_requires_path(self) -> None:
         self.assertFalse(self.can_reach_region("Her Ladyship's Chamber"))

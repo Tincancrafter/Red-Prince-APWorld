@@ -1,4 +1,4 @@
-from BaseClasses import CollectionState, Location
+from BaseClasses import CollectionState, Location, LocationProgressType
 from ..rules import CanReachItemLocation
 from ..options import GoalType
 from ..test import RedPrinceTestBase
@@ -8,6 +8,12 @@ from ..locations import LOCATION_NAME_TO_ID
 from ..items import ITEM_NAME_TO_ID
 
 class TestLocationAccess(RedPrinceTestBase):
+
+    def test_garage_upgrade_disk_excludes_progression(self) -> None:
+        self.assertEqual(
+            self.world.get_location("Upgrade Disk - Garage").progress_type,
+            LocationProgressType.EXCLUDED,
+        )
     options = {
         "room_draft_sanity": True,
         "goal_type": GoalType.option_room46,

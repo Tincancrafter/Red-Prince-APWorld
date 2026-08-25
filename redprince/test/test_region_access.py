@@ -52,6 +52,51 @@ class TestRegionAccess(RedPrinceTestBase):
             self.collect_by_name("Boiler Room")
         self.assertTrue(self.can_reach_region("Outer Room"), "Outer Room should be reachable after collecting the Garage as an item")
 
+    def test_pool_child_rooms_require_the_pool(self) -> None:
+        pool_children = ["Boiler Room", "Pump Room", "Sauna", "Locker Room"]
+        self.collect_all_but(["The Pool"])
+        for room in pool_children:
+            self.assertFalse(self.can_reach_region(room), f"{room} should not be reachable without The Pool")
+
+        self.collect_by_name("The Pool")
+        for room in pool_children:
+            self.assertTrue(self.can_reach_region(room), f"{room} should be reachable after collecting The Pool")
+
+    def test_garage_upgrade_disk_requires_received_car_keys(self) -> None:
+        self.collect_all_but(["CAR KEYS"])
+        self.assertTrue(self.can_reach_region("Garage"), "Garage should be reachable for this test")
+        self.assertFalse(
+            self.can_reach_location("Upgrade Disk - Garage"),
+            "The Garage upgrade disk should not be reachable without receiving CAR KEYS",
+        )
+
+        self.collect_by_name("CAR KEYS")
+        self.assertTrue(
+            self.can_reach_location("Upgrade Disk - Garage"),
+            "The Garage upgrade disk should be reachable after receiving CAR KEYS",
+        )
+
+    def test_freezer_requires_room_46(self) -> None:
+        self.collect_by_name([
+            "Freezer",
+            "Great Hall",
+            "Rotunda",
+            "Passageway",
+            "Corridor",
+            "Hallway",
+            "Foyer",
+            "Parlor",
+            "Nook",
+        ])
+        self.assertFalse(self.can_reach_region("Room 46"), "Room 46 should require North Lever Access")
+        self.assertFalse(self.can_reach_region("Freezer"), "Freezer should not be reachable before Room 46")
+
+        north_lever = self.world.get_location("Inner Sanctum North Lever").item
+        self.assertIsNotNone(north_lever)
+        self.multiworld.state.collect(north_lever)
+        self.assertTrue(self.can_reach_region("Room 46"), "Room 46 should now be reachable")
+        self.assertTrue(self.can_reach_region("Freezer"), "Freezer should be reachable after Room 46")
+
     def test_outer_room_requires_west_gate_path(self) -> None:
         self.collect_all_but(["Garage", "West Gate Path"])
         self.assertFalse(self.can_reach_region("Outer Room"), "Outer Room should not be reachable without having the West Gate Path as an item")

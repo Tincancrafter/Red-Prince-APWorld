@@ -256,6 +256,13 @@ def create_and_connect_regions(world: RedPrinceWorld) -> None:
                     f"The Pool To {k}",
                     Has(k)
                 )
+
+            elif k == "Freezer":
+                entrance_hall.connect(
+                    room,
+                    "Entrance Hall Freezer",
+                    CanReachPickPosition("Freezer") & CanReachRegion("Room 46"),
+                )
             
             elif k == "Morning Room":
                 entrance_hall.connect(
