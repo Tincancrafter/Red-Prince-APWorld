@@ -248,7 +248,10 @@ def create_regular_locations(world: RedPrinceWorld) -> None:
         location_key = k
         locs = get_location_names_with_ids([location_key])
         world.get_region(v[LOCATION_ROOM_KEY]).add_locations(locs, RedPrinceLocation)
-        locations_to_setup[location_key] = get_location_rule(location_key)
+        rule = get_location_rule(location_key)
+        if location_key in workshop_contraptions and world.options.workshop_sanity:
+            rule = Has(v[LOCATION_ITEM_KEY]) & rule
+        locations_to_setup[location_key] = rule
 
     for location_name in EXCLUDED_PROGRESSION_LOCATIONS:
         world.get_location(location_name).progress_type = LocationProgressType.EXCLUDED

@@ -16,6 +16,7 @@ class TestLocationAccess(RedPrinceTestBase):
         )
     options = {
         "room_draft_sanity": True,
+        "workshop_sanity": True,
         "goal_type": GoalType.option_room46,
         "dev_testing": True,
     }
@@ -46,6 +47,13 @@ class TestLocationAccess(RedPrinceTestBase):
     def test_can_craft_electromagnet(self):
         self.collect_by_name(["Electromagnet", "COMPASS", "BATTERY PACK", "Workshop", "Closet", "Bedroom"])
         self.assertTrue(self.can_reach_location("Electromagnet First Pickup"), "Electromagnet should be reachable after having the required items")
+
+    def test_cannot_craft_electromagnet_without_recipe(self):
+        self.collect_by_name(["COMPASS", "BATTERY PACK", "Workshop", "Closet", "Bedroom"])
+        self.assertFalse(
+            self.can_reach_location("Electromagnet First Pickup"),
+            "Electromagnet should require its received recipe before it can be crafted",
+        )
 
     def test_can_craft_burning_glass(self):
         self.collect_by_name(["Burning Glass", "Workshop", "MAGNIFYING GLASS", "Library", "METAL DETECTOR"])
