@@ -9,6 +9,13 @@
 This repository contains the Archipelago world source for the unofficial Red
 Prince integration for Blue Prince.
 
+## Downloads
+
+Ready-to-use `.apworld` files are published on this repository's
+[Releases page](https://github.com/Tincancrafter/Red-Prince-APWorld/releases).
+Use the same version as the YAML and game mod from
+[Red-Prince-Releases](https://github.com/Tincancrafter/Red-Prince-Releases/releases).
+
 ## Development
 
 Install or link the `redprince` directory under an Archipelago checkout's
