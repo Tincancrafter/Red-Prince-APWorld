@@ -168,7 +168,6 @@ class TrunkCounts(OptionCounter):
         "Bedroom": 2,
         "Den": 2,
         "Veranda": 2,
-        "Spare Room": 2,
         "Drawing Room": 0,
     }
 
@@ -531,7 +530,6 @@ option_presets = {
             "Den": 2,
             "Veranda": 2,
             "The Pool": 2,
-            "Spare Room": 2,
             "Drawing Room": 0,
         },
         "standard_item_sanity": True,
