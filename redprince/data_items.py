@@ -588,6 +588,11 @@ permanent_unlocks = {
         ITEM_ID_KEY: 6005,
         ITEM_ITEM_CLASSIFICATION_KEY: ItemClassification.progression,
     },
+    "Progressive Blackbridge/Satellite": {
+        ITEM_ELEMENT_INDEX_KEY: NO_ITEM_ELEMENT_INDEX,
+        ITEM_ID_KEY: 6006,
+        ITEM_ITEM_CLASSIFICATION_KEY: ItemClassification.progression,
+    },
 }
 
 shop_items = gift_shop_items | bookshop_items | showroom_items | armory_items
@@ -720,4 +725,5 @@ ITEMS_BY_GROUPS |= {
     "Workshop Items": {item for item in workshop_items},
     "Standard Items": {item for item in other_items},
     "Permanent Unlocks": {item for item in permanent_unlocks},
+    "Blackbridge/Satellite Tiers": {"Progressive Blackbridge/Satellite"},
 }

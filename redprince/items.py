@@ -437,8 +437,10 @@ def create_all_items(world: RedPrinceWorld) -> None:
     upgrade_disk_item_list = [world.create_item(k) for k in upgrade_disks]
     if world.options.upgrade_disk_sanity:
         itempool += upgrade_disk_item_list
-    else:
-        to_precollect += upgrade_disk_item_list
+    # When upgrade disk sanity is disabled, disks remain entirely vanilla.
+    # The event items placed at their vanilla locations in locations.py are
+    # only used for logic and must not be sent to the client as precollected
+    # items. Precollecting them gives the player all 16 disks on game start.
 
     key_item_list = [world.create_item(k) for k in keys if (k not in ["BASEMENT KEY"] or world.options.goal_type.value > 0)
                                                             and (k not in sanctum_keys or world.options.goal_type.value > 1) 
@@ -492,7 +494,15 @@ def create_all_items(world: RedPrinceWorld) -> None:
     else:
         to_precollect += data_rooms.progressive_classroom
 
-    permanent_additions = [world.create_item(k) for k in permanent_unlocks]
+    # Blackbridge and the Satellite are a strict two-tier progression. Two
+    # copies of one progressive item guarantee that the first receipt unlocks
+    # Blackbridge and only the second can unlock the Satellite.
+    permanent_additions = [
+        world.create_item(k)
+        for k in permanent_unlocks
+        if k not in {"Blackbridge Grotto", "Satellite Dish", "Progressive Blackbridge/Satellite"}
+    ]
+    permanent_additions += [world.create_item("Progressive Blackbridge/Satellite") for _ in range(2)]
     itempool += permanent_additions
 
     # remove anything that isn't implemented yet

@@ -311,7 +311,7 @@ def create_and_connect_regions(world: RedPrinceWorld) -> None:
     private_drive.connect(
         blakbridge_grotto,
         "Private Drive To Blackbridge Grotto",
-        Has("Blackbridge Grotto") & CanReachLocation("Laboratory Puzzle", parent_region_name="Laboratory"),
+        Has("Progressive Blackbridge/Satellite") & CanReachLocation("Laboratory Puzzle - Blackbridge", parent_region_name="Laboratory"),
     )
     private_drive.connect(grounds, "Private Drive To Grounds")
     blakbridge_grotto.connect(
@@ -499,7 +499,7 @@ def create_and_connect_regions(world: RedPrinceWorld) -> None:
         tunnel_area_post_crates,
         "Tunnel Area Entrance To Tunnel Area Post Crates",
         And(
-            Has("Satellite Dish"),
+            Has("Progressive Blackbridge/Satellite", count=2),
             Or(
                 CanReachRegion("Laboratory"),
                 CanReachRegion("Blackbridge Grotto"),

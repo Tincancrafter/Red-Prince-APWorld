@@ -1659,7 +1659,7 @@ misc_locations = {
         ),
         IMPLEMENTATION_STATUS: NOT_IMPLEMENTED,
     },
-    "Laboratory Puzzle": {
+    "Laboratory Puzzle - Blackbridge": {
         LOCATION_ID_KEY: all_areas["Laboratory"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 1,
         LOCATION_ROOM_KEY: "Laboratory",
         LOCATION_RULE_SIMPLE_COMMON: CanReachRegion("Boiler Room"),

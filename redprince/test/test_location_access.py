@@ -29,7 +29,7 @@ class TestLocationAccess(RedPrinceTestBase):
             mem[id] = name
 
     def test_can_reach_tunnel_after_crates(self):
-        self.collect_by_name(["Laboratory", "The Pool", "Boiler Room", "Parlor", "MICROCHIP 1", "MICROCHIP 2", "MICROCHIP 3", "Garage", "Hovel", "Utility Closet", "Schoolhouse", "SHOVEL", "SLEDGE HAMMER", "Workshop", "MAGNIFYING GLASS", "METAL DETECTOR", "Library", "Burning Glass", "Blackbridge Grotto", "Apple Orchard", "Satellite Dish"])
+        self.collect_by_name(["Laboratory", "The Pool", "Boiler Room", "Parlor", "MICROCHIP 1", "MICROCHIP 2", "MICROCHIP 3", "Garage", "Hovel", "Utility Closet", "Schoolhouse", "SHOVEL", "SLEDGE HAMMER", "Workshop", "MAGNIFYING GLASS", "METAL DETECTOR", "Library", "Burning Glass", "Progressive Blackbridge/Satellite", "Progressive Blackbridge/Satellite", "Apple Orchard"])
         self.debug_print_regions_items_locations(True)
         self.assertRuleTrue(CanReachItemLocation("MICROCHIP 1"), "Should be able to reach MICROCHIP 1 after having the required rooms") # type: ignore
         self.assertRuleTrue(CanReachItemLocation("MICROCHIP 2"), "Should be able to reach MICROCHIP 2 after having the required rooms") # type: ignore

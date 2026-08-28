@@ -2,6 +2,7 @@ from BaseClasses import CollectionState, Location
 from ..options import GoalType
 from ..test import RedPrinceTestBase
 from ..data_rooms import rooms, core_rooms
+from ..data_other_locations import upgrade_disks
 from ..constants import *
 from ..locations import LOCATION_NAME_TO_ID
 from ..items import ITEM_NAME_TO_ID
@@ -22,3 +23,30 @@ class TestItems(RedPrinceTestBase):
     def test_item_groups(self):
         for name, group in self.world.item_name_groups.items():
             print(f"Group {name} contains: {group}\n")
+
+    def test_blackbridge_satellite_progressive_tiers(self):
+        progression_names = [item.name for item in self.multiworld.itempool]
+        self.assertEqual(2, progression_names.count("Progressive Blackbridge/Satellite"))
+        self.assertNotIn("Blackbridge Grotto", progression_names)
+        self.assertNotIn("Satellite Dish", progression_names)
+
+    def test_blackbridge_location_name_matches_client(self):
+        self.assertIn("Laboratory Puzzle - Blackbridge", LOCATION_NAME_TO_ID)
+        self.assertNotIn("Laboratory Puzzle", LOCATION_NAME_TO_ID)
+
+
+class TestVanillaUpgradeDisks(RedPrinceTestBase):
+    options = {
+        "room_draft_sanity": True,
+        "upgrade_disk_sanity": False,
+        "goal_type": GoalType.option_room46,
+    }
+
+    def test_upgrade_disks_are_not_precollected(self):
+        precollected_names = {
+            item.name for item in self.multiworld.precollected_items[self.player]
+        }
+        self.assertTrue(
+            precollected_names.isdisjoint(upgrade_disks),
+            "Vanilla upgrade disks must not be sent to the client as starting items",
+        )
