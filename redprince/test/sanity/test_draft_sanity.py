@@ -38,9 +38,11 @@ class TestDraftSanity(RedPrinceTestBase):
         )
 
     def test_room_requires_path(self) -> None:
+        # Starting rooms are randomized and can occasionally satisfy the path
+        # requirement on their own, so remove them for this focused rule test.
+        self.remove(self.world.starting_rooms)
         self.assertFalse(self.can_reach_region("Her Ladyship's Chamber"))
         self.collect_by_name("Her Ladyship's Chamber")
-        print(self.multiworld.worlds[self.player].get_region("Her Ladyship's Chamber").entrances[0].access_rule.explain_str(self.multiworld.state)) # type: ignore
         self.assertFalse(self.can_reach_region("Her Ladyship's Chamber"))
         self.collect_by_name(["Hallway", "Bedroom", "Security", "Courtyard"])
         self.assertTrue(self.can_reach_region("Her Ladyship's Chamber"), "Should be able to reach Her Ladyship's Chamber after collecting enough rooms")

@@ -13,9 +13,9 @@ from .options import GoalType, ItemLogicMode
 from . import items
 from .constants import *
 
-from .data_rooms import rooms, blue_rooms, core_rooms
+from .data_rooms import rooms, blue_rooms, core_rooms, LOCKED_TRUNK_CHECK_ROOMS
 from .data_items import armory_items
-from .data_other_locations import locations, keys, floorplans, shop_items, trophies, sanctum_keys, aries_court_mora_jai_boxes, upgrade_disks, workshop_contraptions
+from .data_other_locations import locations, keys, floorplans, shop_items, bookshop_items, library_checkouts, trophies, sanctum_keys, aries_court_mora_jai_boxes, upgrade_disks, workshop_contraptions
 from .items import RedPrinceItem
 
 EXCLUDED_PROGRESSION_LOCATIONS = {
@@ -43,7 +43,7 @@ LOCATION_NAME_TO_ID = (
         f"{k} Locked Trunk {idx}": v[ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 10_000 + idx
         for k, v in rooms.items()
         for idx in range(1, 101)
-        if v[ROOM_CHEST_SPOT_COUNT_KEY] > 0
+        if k in LOCKED_TRUNK_CHECK_ROOMS
     }
     | {
         # Add First Pickup as locations for armory items.
@@ -101,6 +101,9 @@ def create_regular_locations(world: RedPrinceWorld) -> None:
         # Add Nth locked trunk open
 
         trunk_count = 0
+
+        if room_key not in LOCKED_TRUNK_CHECK_ROOMS:
+            continue
 
         if room_key in world.options.trunks.value:
             trunk_count = world.options.trunks.value[room_key]
@@ -184,10 +187,16 @@ def create_regular_locations(world: RedPrinceWorld) -> None:
         if world.options.trophy_sanity == False and (k in trophies or k in ["Gift Shop - Blue Tents"]):
             continue # Skip placing trophies when trophy sanity is off
 
+        if k in bookshop_items and world.options.bookshop_sanity == False:
+            continue
+
+        if k in library_checkouts and world.options.library_checkout_sanity == False:
+            continue
+
         if not is_implemented(k, world):
             continue
 
-        if k in shop_items and world.options.special_shop_sanity == False and NONSANITY_LOCATION_KEY in v:
+        if k in shop_items and k not in bookshop_items and world.options.special_shop_sanity == False and NONSANITY_LOCATION_KEY in v:
             # Place special shop items at their in-game locations when special shop sanity is off.
             reg = world.get_region(v[LOCATION_ROOM_KEY])
             loc = RedPrinceLocation(world.player, k, None, reg)

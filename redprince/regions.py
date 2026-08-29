@@ -306,7 +306,7 @@ def create_and_connect_regions(world: RedPrinceWorld) -> None:
     campsite.connect(
         gemstone_cavern,
         "Campsite To Gemstone Cavern",
-        Has("Gemstone Caverns") & CanReachLocation("VAC Controls", parent_region_name="Utility Closet"),
+        Has("Unlock Gemstone Caverns") & CanReachLocation("VAC Controls", parent_region_name="Utility Closet"),
     )  # Rules of are found in office emails. Solution is in office emails. May be able to adjust pattern?
     private_drive.connect(
         blakbridge_grotto,
@@ -596,9 +596,10 @@ def create_and_connect_regions(world: RedPrinceWorld) -> None:
             Or(
                 CanReachRegion("Tomb"),
                 CanReachRegion("Boiler Room")
-            )
+            ),
+            options=complex_logic_filter,
         ),
-    )  # Pump Room
+    )  # Crossing the Reservoir with the Pump Room is complex logic.
 
     outer_room.connect(
         atelier,

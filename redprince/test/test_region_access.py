@@ -97,11 +97,11 @@ class TestRegionAccess(RedPrinceTestBase):
         self.assertTrue(self.can_reach_region("Room 46"), "Room 46 should now be reachable")
         self.assertTrue(self.can_reach_region("Freezer"), "Freezer should be reachable after Room 46")
 
-    def test_outer_room_requires_west_gate_path(self) -> None:
-        self.collect_all_but(["Garage", "West Gate Path"])
-        self.assertFalse(self.can_reach_region("Outer Room"), "Outer Room should not be reachable without having the West Gate Path as an item")
+    def test_west_gate_requires_west_gate_path(self) -> None:
+        self.collect_all_but(["West Gate Path"])
+        self.assertFalse(self.can_reach_location("West Gate"), "West Gate should not be reachable without having the West Gate Path as an item")
         self.collect_by_name("West Gate Path")
-        self.assertTrue(self.can_reach_region("Outer Room"), "Outer Room should be reachable after collecting the West Gate Path as an item")
+        self.assertTrue(self.can_reach_location("West Gate"), "West Gate should be reachable after collecting the West Gate Path as an item")
 
     def test_outer_rooms_require_room_item(self) -> None:
         self.collect_by_name("Hallway")
@@ -120,9 +120,9 @@ class TestRegionAccess(RedPrinceTestBase):
             self.assertTrue(self.can_reach_region(room), f"{room} should be reachable after collecting the room as an item")
     
     def test_gemstone_cavern_requires_gemstone_caverns(self) -> None:
-        self.collect_all_but(["Gemstone Caverns", "Utility Closet"])
+        self.collect_all_but(["Unlock Gemstone Caverns", "Utility Closet"])
         self.assertFalse(self.can_reach_region("Gemstone Cavern"), "Gemstone Caverns should not be reachable without having the Gemstone Caverns as an item")
-        self.collect_by_name("Gemstone Caverns")
+        self.collect_by_name("Unlock Gemstone Caverns")
         self.assertFalse(self.can_reach_region("Gemstone Cavern"), "Gemstone Caverns should not be reachable without having the Utility Closet as an item")
         self.collect_by_name("Utility Closet")
         self.assertTrue(self.can_reach_region("Gemstone Cavern"), "Gemstone Caverns should be reachable after collecting the Gemstone Caverns as an item")
@@ -137,7 +137,7 @@ class TestRegionAccess(RedPrinceTestBase):
         self.assertFalse(self.can_reach_region("The Precipice"), "The Precipice should not be reachable without having all Gas Valves")
         self.collect_by_name("Apple Orchard")
         self.assertFalse(self.can_reach_region("The Precipice"), "The Precipice should not be reachable without having all Gas Valves")
-        self.collect_by_name(["Gemstone Caverns", "Utility Closet"])
+        self.collect_by_name(["Unlock Gemstone Caverns", "Utility Closet"])
         self.assertFalse(self.can_reach_region("The Precipice"), "The Precipice should not be reachable without having all Gas Valves")
         self.collect_by_name(["Garage", "Hallway", "West Wing Hall", "Pantry", "Bedroom"])
         self.collect_by_name("Schoolhouse")
@@ -170,7 +170,7 @@ class TestRegionAccess(RedPrinceTestBase):
         self.assertTrue(self.can_reach_region("The Underpass"), "The Underpass should be reachable after having the Reservoir on both sides")
     
     def test_aries_court_requires_chess_pieces(self) -> None:
-        self.collect_by_name(["Apple Orchard", "Gemstone Caverns", "Schoolhouse", "Hovel", "Utility Closet", "Garage", "Laboratory", "Boiler Room", "The Pool"])
+        self.collect_by_name(["Apple Orchard", "Unlock Gemstone Caverns", "Schoolhouse", "Hovel", "Utility Closet", "Garage", "Laboratory", "Boiler Room", "The Pool"])
         # Precipice
 
         if not self.multiworld.state.has("Chess Piece King", self.player):

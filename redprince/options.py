@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from .constants import *
-from .data_rooms import rooms
+from .data_rooms import rooms, LOCKED_TRUNK_CHECK_ROOMS
 
 from Options import (
     Choice,
@@ -110,6 +110,46 @@ class TrophySanity(Toggle):
 
     visibility = Visibility.none
 
+class BookshopSanity(Toggle):
+    """
+    Adds a location check for the first purchase of each book sold by the Bookshop.
+    """
+
+    display_name = "Bookshop Purchase Sanity"
+    default = False
+    visibility = Visibility.all
+
+class LibraryCheckoutSanity(Toggle):
+    """
+    Adds a location check when each Library book is checked out for the first time.
+    This includes the six standard Library books and the six books unlocked through
+    Bookshop purchases.
+    """
+
+    display_name = "Library Checkout Sanity"
+    default = False
+    visibility = Visibility.all
+
+class OpAllowance(Toggle):
+    """
+    Regrants all received Extra Steps, Extra Gems, and Extra Dice filler items at
+    the beginning of every run, making them behave like a recurring allowance.
+    """
+
+    display_name = "OP Allowance"
+    default = False
+    visibility = Visibility.all
+
+class KeepSimpleItemsEveryRun(Toggle):
+    """
+    Restores eligible simple inventory items received from Archipelago at the
+    beginning of every run.
+    """
+
+    display_name = "Keep Simple Items Every Run"
+    default = False
+    visibility = Visibility.all
+
 # TODO-2 Crate Sanity?
 # TODO-2 Document full list of potential checks/locations posted in blue prince thread.
 
@@ -123,7 +163,7 @@ class LockedTrunkCommonCount(Range):
     range_start = 0
     range_end = 100
 
-    default = 2
+    default = 0
 
 class LockedTrunkRareCount(Range):
     """
@@ -163,15 +203,9 @@ class TrunkCounts(OptionCounter):
     min = 0
     max = 100
 
-    default = {
-        "Great Hall": 5,
-        "Bedroom": 2,
-        "Den": 2,
-        "Veranda": 2,
-        "Drawing Room": 0,
-    }
+    default = {}
 
-    valid_keys = [room for room in rooms if ROOM_CHEST_SPOT_COUNT_KEY in rooms[room] and rooms[room][ROOM_CHEST_SPOT_COUNT_KEY] > 0]
+    valid_keys = sorted(LOCKED_TRUNK_CHECK_ROOMS)
 
 class ItemLogicMode(Choice):
     """
@@ -252,7 +286,7 @@ class FillerItemDistribution(OptionCounter):
         "extra_steps_1": 0,
         "extra_steps_2": 0,
         "extra_steps_5": 0,
-        "nothing": 50,
+        "nothing": 0,
     }
 
     valid_keys = default.keys()
@@ -459,6 +493,12 @@ class RedPrinceOptions(PerGameCommonOptions):
     key_sanity: KeySanity
     special_shop_sanity: SpecialShopSanity
     trophy_sanity: TrophySanity
+    bookshop_sanity: BookshopSanity
+    library_checkout_sanity: LibraryCheckoutSanity
+
+    # Per-run persistence options.
+    op_allowance: OpAllowance
+    keep_simple_items_every_run: KeepSimpleItemsEveryRun
 
     # Extra item options.
     filler_item_distribution: FillerItemDistribution
@@ -497,7 +537,13 @@ option_groups = [
             KeySanity,
             SpecialShopSanity,
             TrophySanity,
+            BookshopSanity,
+            LibraryCheckoutSanity,
         ],
+    ),
+    OptionGroup(
+        "Per-Run Options",
+        [OpAllowance, KeepSimpleItemsEveryRun],
     ),
     OptionGroup(
         "Filler Options",
@@ -538,6 +584,10 @@ option_presets = {
         "key_sanity": True,
         "special_shop_sanity": False,
         "trophy_sanity": False,
+        "bookshop_sanity": False,
+        "library_checkout_sanity": False,
+        "op_allowance": False,
+        "keep_simple_items_every_run": False,
         "item_logic_mode": ItemLogicMode.default,
         "filler_item_distribution": {"nothing": 100},
         "trap_type_distribution": {},

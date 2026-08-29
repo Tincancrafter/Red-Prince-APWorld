@@ -376,41 +376,92 @@ bookshop_items = {
         LOCATION_ID_KEY: all_areas["Bookshop"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 100,
         LOCATION_ROOM_KEY: "Bookshop",
         NONSANITY_LOCATION_KEY: "History of Orindia (1st ed.)",
-        IMPLEMENTATION_STATUS: NOT_IMPLEMENTED,
     },
     "Bookshop - A New Clue": {
         LOCATION_ID_KEY: all_areas["Bookshop"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 1,
         LOCATION_ROOM_KEY: "Bookshop",
         NONSANITY_LOCATION_KEY: "A New Clue",
-        IMPLEMENTATION_STATUS: NOT_IMPLEMENTED,
     },
     "Bookshop - The Curse of Black Bridge": {
         LOCATION_ID_KEY: all_areas["Bookshop"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 2,
         LOCATION_ROOM_KEY: "Bookshop",
         NONSANITY_LOCATION_KEY: "The Curse of Black Bridge",
-        IMPLEMENTATION_STATUS: NOT_IMPLEMENTED,
     },
     "Bookshop - Realm & Rune": {
         LOCATION_ID_KEY: all_areas["Bookshop"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 3,
         LOCATION_ROOM_KEY: "Bookshop",
         NONSANITY_LOCATION_KEY: "Realm & Rune",
-        IMPLEMENTATION_STATUS: NOT_IMPLEMENTED,
     },
     "Bookshop - Drafting Strategy: Architectural Digest Vol. 4": {
         LOCATION_ID_KEY: all_areas["Bookshop"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 4,
         LOCATION_ROOM_KEY: "Bookshop",
         NONSANITY_LOCATION_KEY: "Drafting Strategy: Architectural Digest Vol. 4",
-        IMPLEMENTATION_STATUS: NOT_IMPLEMENTED,
     },
     "Bookshop - Drafting Strategy: Architectural Digest Vol. 5": {
         LOCATION_ID_KEY: all_areas["Bookshop"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 5,
         LOCATION_ROOM_KEY: "Bookshop",
         NONSANITY_LOCATION_KEY: "Drafting Strategy: Architectural Digest Vol. 5",
-        IMPLEMENTATION_STATUS: NOT_IMPLEMENTED,
     },
 }
 
 shop_items = gift_shop_items | bookshop_items
+
+library_checkouts = {
+    "Library Checkout - A Sightseer's Guide to Reddington": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 200,
+        LOCATION_ROOM_KEY: "Library",
+    },
+    "Library Checkout - Swim Bird": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 201,
+        LOCATION_ROOM_KEY: "Library",
+    },
+    "Library Checkout - The Fixed Stars": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 202,
+        LOCATION_ROOM_KEY: "Library",
+    },
+    "Library Checkout - The History of Orindia (2nd ed.)": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 203,
+        LOCATION_ROOM_KEY: "Library",
+    },
+    "Library Checkout - EPCW Pump System User Manual": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 204,
+        LOCATION_ROOM_KEY: "Library",
+    },
+    "Library Checkout - Drafting Strategy: Architectural Digest Vol. 3": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 205,
+        LOCATION_ROOM_KEY: "Library",
+    },
+    "Library Checkout - The History of Orindia (1st ed.)": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 206,
+        LOCATION_ROOM_KEY: "Library",
+        LOCATION_RULE_SIMPLE_COMMON: CanReachRegion("Bookshop"),
+    },
+    "Library Checkout - A New Clue": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 207,
+        LOCATION_ROOM_KEY: "Library",
+        LOCATION_RULE_SIMPLE_COMMON: CanReachRegion("Bookshop"),
+    },
+    "Library Checkout - The Curse of Black Bridge": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 208,
+        LOCATION_ROOM_KEY: "Library",
+        LOCATION_RULE_SIMPLE_COMMON: CanReachRegion("Bookshop"),
+    },
+    "Library Checkout - Realm & Rune": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 209,
+        LOCATION_ROOM_KEY: "Library",
+        LOCATION_RULE_SIMPLE_COMMON: CanReachRegion("Bookshop"),
+    },
+    "Library Checkout - Drafting Strategy: Architectural Digest Vol. 4": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 210,
+        LOCATION_ROOM_KEY: "Library",
+        LOCATION_RULE_SIMPLE_COMMON: CanReachRegion("Bookshop"),
+    },
+    "Library Checkout - Drafting Strategy: Architectural Digest Vol. 5": {
+        LOCATION_ID_KEY: all_areas["Library"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 211,
+        LOCATION_ROOM_KEY: "Library",
+        LOCATION_RULE_SIMPLE_COMMON: CanReachRegion("Bookshop"),
+    },
+}
 
 # I ignored Cloister upgrades for now, but they should probably be checked eventually, since some of them would be a break in logic for item pickups
 
@@ -1693,7 +1744,7 @@ misc_locations = {
 # Unseal Blue Doors
 # Levers
 
-locations = trophies | safes_and_small_gates | mora_jai_boxes | floorplans | shop_items | upgrade_disks | keys | misc_locations | item_pickups | workshop_contraptions | doors_walls_and_gates
+locations = trophies | safes_and_small_gates | mora_jai_boxes | floorplans | shop_items | library_checkouts | upgrade_disks | keys | misc_locations | item_pickups | workshop_contraptions | doors_walls_and_gates
 
 LOCATIONS_BY_GROUPS |= {
     "Trophies": {k for k in trophies},
@@ -1709,5 +1760,6 @@ LOCATIONS_BY_GROUPS |= {
     "Doors, Walls, and Gates": {k for k in doors_walls_and_gates},
     "Gift Shop": {k for k in gift_shop_items},
     "Bookshop": {k for k in bookshop_items},
+    "Library Checkouts": {k for k in library_checkouts},
     "Armory Purchases": {f"{k} First Pickup" for k in armory_items},
 }

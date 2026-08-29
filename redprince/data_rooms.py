@@ -1834,6 +1834,47 @@ black_rooms = {
 
 rooms = blue_rooms | bedrooms | hallways | green_rooms | shops | red_rooms | black_rooms
 
+# Rooms that may be configured as locked-trunk Archipelago checks.
+LOCKED_TRUNK_CHECK_ROOMS = {
+    "Attic",
+    "Bunk Room",
+    "Clock Tower",
+    "Conservatory",
+    "Courtyard",
+    "Dormitory",
+    "Drawing Room",
+    "Entrance Hall",
+    "Foyer",
+    "Gallery",
+    "Great Hall",
+    "Her Ladyship's Chamber",
+    "Hovel",
+    "Laboratory",
+    "Library",
+    "Mail Room",
+    "Mechanarium",
+    "Morning Room",
+    "Music Room",
+    "Nook",
+    "Observatory",
+    "Office",
+    "Planetarium",
+    "Pump Room",
+    "Root Cellar",
+    "Secret Passage",
+    "Servant's Quarters",
+    "Storeroom",
+    "Study",
+    "Terrace",
+    "The Pool",
+    "Trophy Room",
+    "Tunnel",
+    "Vault",
+    "Veranda",
+    "Weight Room",
+    "Wine Cellar",
+}
+
 # These are here to make sure that location ids are deterministic.
 # Previously used hash() of the room name, but that was not deterministic (for some reason)
 other_areas = {
@@ -1971,6 +2012,6 @@ LOCATIONS_BY_GROUPS |= {
         f"{k} Locked Trunk {idx}"
         for k, v in rooms.items()
         for idx in range(1, 101)
-        if v[ROOM_CHEST_SPOT_COUNT_KEY] > 0
+        if k in LOCKED_TRUNK_CHECK_ROOMS
     }
 }

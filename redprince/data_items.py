@@ -568,7 +568,7 @@ permanent_unlocks = {
         ITEM_ID_KEY: 6001,
         ITEM_ITEM_CLASSIFICATION_KEY: ItemClassification.progression,
     },
-    "Gemstone Caverns": {
+    "Unlock Gemstone Caverns": {
         ITEM_ELEMENT_INDEX_KEY: NO_ITEM_ELEMENT_INDEX,
         ITEM_ID_KEY: 6002,
         ITEM_ITEM_CLASSIFICATION_KEY: ItemClassification.progression,
