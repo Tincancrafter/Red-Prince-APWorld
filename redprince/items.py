@@ -476,6 +476,10 @@ def create_all_items(world: RedPrinceWorld) -> None:
         world.starting_rooms = world.random.sample(valid_rooms,
             k=world.options.starting_room_amount.value,
         )
+        if world.starting_rooms and all(rooms[room.name][ROOM_LAYOUT_TYPE_KEY] == ROOM_LAYOUT_TYPE_D for room in world.starting_rooms):
+            path_rooms = [room for room in valid_rooms if rooms[room.name][ROOM_LAYOUT_TYPE_KEY] != ROOM_LAYOUT_TYPE_D]
+            replacement = world.random.choice(path_rooms)
+            world.starting_rooms[world.random.randrange(len(world.starting_rooms))] = replacement
         world.starting_rooms += [r for r in room_item_list if r.name == "Closet"]
         itempool += [room for room in room_item_list if room not in world.starting_rooms 
                      and not (room.name in ["Treasure Trove", "Gift Shop"] and world.options.goal_type.value <= 1)

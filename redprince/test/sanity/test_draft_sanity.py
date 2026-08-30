@@ -37,6 +37,14 @@ class TestDraftSanity(RedPrinceTestBase):
             f"Starting rooms include gated rooms: {starting_room_names & STARTING_ROOM_EXCLUSIONS}",
         )
 
+    def test_starting_rooms_include_a_path_room(self) -> None:
+        self.assertTrue(
+            any(rooms[room.name][data_rooms.ROOM_LAYOUT_TYPE_KEY] != data_rooms.ROOM_LAYOUT_TYPE_D
+                for room in self.multiworld.worlds[self.player].starting_rooms
+                if room.name != "Closet"),
+            "Starting rooms should not all be dead ends",
+        )
+
     def test_room_requires_path(self) -> None:
         # Starting rooms are randomized and can occasionally satisfy the path
         # requirement on their own, so remove them for this focused rule test.

@@ -123,14 +123,12 @@ class TestRegionAccess(RedPrinceTestBase):
         self.collect_all_but(["Unlock Gemstone Caverns", "Utility Closet"])
         self.assertFalse(self.can_reach_region("Gemstone Cavern"), "Gemstone Caverns should not be reachable without having the Gemstone Caverns as an item")
         self.collect_by_name("Unlock Gemstone Caverns")
-        self.assertFalse(self.can_reach_region("Gemstone Cavern"), "Gemstone Caverns should not be reachable without having the Utility Closet as an item")
-        self.collect_by_name("Utility Closet")
         self.assertTrue(self.can_reach_region("Gemstone Cavern"), "Gemstone Caverns should be reachable after collecting the Gemstone Caverns as an item")
 
     def test_blackbridge_grotto_requires_blackbridge_grotto_item(self) -> None:
-        self.collect_all_but(["Progressive Blackbridge/Satellite", "Laboratory", "Boiler Room", "The Pool"])
+        self.collect_all_but(["Progressive Blackbridge/Satellite"])
         self.assertFalse(self.can_reach_region("Blackbridge Grotto"), "Blackbridge Grotto should not be reachable without the first progressive tier")
-        self.collect_by_name(["Progressive Blackbridge/Satellite", "Laboratory", "Boiler Room", "The Pool"])
+        self.collect_by_name("Progressive Blackbridge/Satellite")
         self.assertTrue(self.can_reach_region("Blackbridge Grotto"), "Blackbridge Grotto should be reachable after collecting the first progressive tier")
 
     def test_the_precipice_requires_gas_valves(self) -> None:

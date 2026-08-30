@@ -1195,7 +1195,10 @@ unique_item_pickup = {
         LOCATION_ID_KEY: all_areas["Closed Exhibit"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 1,
         LOCATION_ROOM_KEY: "Closed Exhibit",
         LOCATION_ITEM_KEY: "PAPER CROWN",
-        
+        # The crown costs five coins. Loose coins are consumable and cannot be
+        # proven from AP state, so require the renewable Coin Purse route and
+        # enough reachable rooms to generate the purchase price.
+        LOCATION_RULE_SIMPLE_COMMON: Has("COIN PURSE") & CanReachRegionsFromList(*rooms, count=5),
     },
     "ROYAL SCEPTER First Pickup": {
         LOCATION_ID_KEY: all_areas["Treasure Trove"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 100,

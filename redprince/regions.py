@@ -271,6 +271,34 @@ def create_and_connect_regions(world: RedPrinceWorld) -> None:
                     CanReachPickPosition("Morning Room") & CanReachRegion("Kitchen"), # Requires Kitchen or Breakfast Nook, but we don't handle room upgrades yet.
                 )
 
+            elif k == "Garage":
+                entrance_hall.connect(
+                    room,
+                    "Entrance Hall Garage",
+                    CanReachPickPosition("Garage") & HasGroup("Rooms", count=4),
+                )
+
+            elif k == "Tunnel":
+                entrance_hall.connect(
+                    room,
+                    "Entrance Hall Tunnel",
+                    CanReachPickPosition("Tunnel") & HasGroup("Rooms", count=2),
+                )
+
+            elif k == "The Foundation":
+                entrance_hall.connect(
+                    room,
+                    "Entrance Hall The Foundation",
+                    CanReachPickPosition("The Foundation") & HasGroup("Rooms", count=4),
+                )
+
+            elif k == "Secret Passage":
+                entrance_hall.connect(
+                    room,
+                    "Entrance Hall Secret Passage",
+                    Has("Secret Passage"),
+                )
+
             elif k == "Throne Room":
                 entrance_hall.connect(
                     room,
@@ -306,12 +334,12 @@ def create_and_connect_regions(world: RedPrinceWorld) -> None:
     campsite.connect(
         gemstone_cavern,
         "Campsite To Gemstone Cavern",
-        Has("Unlock Gemstone Caverns") & CanReachLocation("VAC Controls", parent_region_name="Utility Closet"),
+        Has("Unlock Gemstone Caverns"),
     )  # Rules of are found in office emails. Solution is in office emails. May be able to adjust pattern?
     private_drive.connect(
         blakbridge_grotto,
         "Private Drive To Blackbridge Grotto",
-        Has("Progressive Blackbridge/Satellite") & CanReachLocation("Laboratory Puzzle - Blackbridge", parent_region_name="Laboratory"),
+        Has("Progressive Blackbridge/Satellite"),
     )
     private_drive.connect(grounds, "Private Drive To Grounds")
     blakbridge_grotto.connect(
