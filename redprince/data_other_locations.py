@@ -1308,6 +1308,9 @@ upgrade_disks = {
         LOCATION_ID_KEY: all_areas["Commissary"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 100,
         LOCATION_ROOM_KEY: "Commissary",
         LOCATION_ITEM_KEY: "UPGRADE DISK COMMISSARY",
+        # The disk is a paid purchase. Requiring the Coin Purse gives logic a
+        # renewable source of gold instead of assuming random filler is enough.
+        LOCATION_RULE_SIMPLE_COMMON: CanReachItemLocation("COIN PURSE"),
     },
     "Upgrade Disk - Garage": {
         LOCATION_ID_KEY: all_areas["Garage"][ROOM_ITEM_ID_KEY] * ROOM_MULTIPLIER + 100,

@@ -138,6 +138,11 @@ def create_regular_locations(world: RedPrinceWorld) -> None:
 
     for k, v in locations.items():
 
+        # The Commissary disk is a shop purchase, so it only participates in
+        # the multiworld when shop sanity is enabled.
+        if k == "Upgrade Disk - Commissary" and not world.options.special_shop_sanity:
+            continue
+
         if IMPLEMENTATION_STATUS in v and v[IMPLEMENTATION_STATUS] == NOT_IMPLEMENTED:
             continue
 

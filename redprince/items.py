@@ -434,7 +434,11 @@ def create_all_items(world: RedPrinceWorld) -> None:
     else:
         to_precollect += workshop_item_list
 
-    upgrade_disk_item_list = [world.create_item(k) for k in upgrade_disks]
+    upgrade_disk_item_list = [
+        world.create_item(k)
+        for k in upgrade_disks
+        if k != "UPGRADE DISK COMMISSARY" or world.options.special_shop_sanity
+    ]
     if world.options.upgrade_disk_sanity:
         itempool += upgrade_disk_item_list
     # When upgrade disk sanity is disabled, disks remain entirely vanilla.

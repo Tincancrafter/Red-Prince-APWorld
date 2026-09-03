@@ -50,3 +50,36 @@ class TestVanillaUpgradeDisks(RedPrinceTestBase):
             precollected_names.isdisjoint(upgrade_disks),
             "Vanilla upgrade disks must not be sent to the client as starting items",
         )
+
+
+class TestCommissaryDiskRequiresShopSanity(RedPrinceTestBase):
+    options = {
+        "room_draft_sanity": True,
+        "upgrade_disk_sanity": True,
+        "special_shop_sanity": False,
+        "goal_type": GoalType.option_room46,
+    }
+
+    def test_commissary_disk_location_and_item_are_omitted(self):
+        with self.assertRaises(KeyError):
+            self.multiworld.get_location("Upgrade Disk - Commissary", self.player)
+        self.assertNotIn(
+            "UPGRADE DISK COMMISSARY",
+            [item.name for item in self.multiworld.itempool],
+        )
+
+
+class TestCommissaryEconomyLogic(RedPrinceTestBase):
+    options = {
+        "room_draft_sanity": True,
+        "standard_item_sanity": True,
+        "upgrade_disk_sanity": True,
+        "special_shop_sanity": True,
+        "goal_type": GoalType.option_room46,
+    }
+
+    def test_commissary_disk_requires_coin_purse(self):
+        self.collect_all_but(["COIN PURSE"])
+        self.assertFalse(self.can_reach_location("Upgrade Disk - Commissary"))
+        self.collect_by_name("COIN PURSE")
+        self.assertTrue(self.can_reach_location("Upgrade Disk - Commissary"))
