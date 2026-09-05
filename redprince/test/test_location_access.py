@@ -67,3 +67,21 @@ class TestLocationAccess(RedPrinceTestBase):
         self.assertIsNotNone(loc1, "Bunk Room First Entering should have an item")
         self.assertIsNotNone(loc2, "Bunk Room First Entering 2 should have an item")
         self.assertEqual(loc1.name, loc2.name, "Bunk Room First Entering and Bunk Room First Entering 2 should have the same item") # type: ignore
+
+    def test_bunk_rooms_match_an_early_prefilled_item(self):
+        from ..locations import attempt_to_fill_multiple_locations_with_same_item
+
+        loc1 = self.world.get_location("Bunk Room First Entering")
+        loc2 = self.world.get_location("Bunk Room First Entering 2")
+        matching_items = [item for item in self.multiworld.itempool if item.name == "Extra Steps 1"]
+        self.assertGreaterEqual(len(matching_items), 2)
+
+        early_item = matching_items[0]
+        loc2.place_locked_item(early_item)
+        self.multiworld.itempool.remove(early_item)
+        fill_locations = self.multiworld.get_unfilled_locations()
+        filler_pool = [item for item in self.multiworld.itempool if not item.advancement and not item.useful]
+
+        self.assertTrue(attempt_to_fill_multiple_locations_with_same_item(self.world, filler_pool, fill_locations))
+        self.assertIsNotNone(loc1.item)
+        self.assertEqual(loc1.item.name, loc2.item.name) # type: ignore

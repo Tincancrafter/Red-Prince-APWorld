@@ -301,6 +301,33 @@ def force_special_location_conditions(world: RedPrinceWorld,
 
 # In theory, this should get a random item with multiple copies, but this world only has one that is progressive, so it will need to be tested if it works correctly
 def attempt_to_fill_multiple_locations_with_same_item(world: RedPrinceWorld, pool: List["Item"], locations: List["Location"]) -> bool:
+    loc1 = world.get_location("Bunk Room First Entering")
+    loc2 = world.get_location("Bunk Room First Entering 2")
+
+    # Early-item placement runs before fill_hook and may already have filled one
+    # of these locations. Match the other location to that item instead of
+    # trying to overwrite the prefilled location.
+    if loc1.item is not None or loc2.item is not None:
+        if loc1.item is not None and loc2.item is not None:
+            if loc1.item.name != loc2.item.name:
+                raise Exception("The Bunk Room First Entering locations were prefilled with different items.")
+            return True
+
+        filled_loc = loc1 if loc1.item is not None else loc2
+        empty_loc = loc2 if loc1.item is not None else loc1
+        matching_item = next((item for item in pool if item.name == filled_loc.item.name), None)
+        if matching_item is None:
+            return False
+        if not empty_loc.can_fill(world.multiworld.state, matching_item, check_access=False):
+            return False
+
+        empty_loc.place_locked_item(matching_item)
+        if empty_loc in locations:
+            locations.remove(empty_loc)
+        pool.remove(matching_item)
+        print("Matched a prefilled Bunk Room First Entering location to satisfy the same-item condition.")
+        return True
+
     multi : List[str] = []
     
     for item in pool:
@@ -311,9 +338,6 @@ def attempt_to_fill_multiple_locations_with_same_item(world: RedPrinceWorld, poo
 
     if len(multi) == 0:
         return False
-
-    loc1 = world.get_location("Bunk Room First Entering")
-    loc2 = world.get_location("Bunk Room First Entering 2")
 
     l1_item : Item | None = None
 
@@ -334,8 +358,10 @@ def attempt_to_fill_multiple_locations_with_same_item(world: RedPrinceWorld, poo
                 loc1.place_locked_item(l1_item)
                 loc2.place_locked_item(item)
 
-                locations.remove(loc1)
-                locations.remove(loc2)
+                if loc1 in locations:
+                    locations.remove(loc1)
+                if loc2 in locations:
+                    locations.remove(loc2)
                 pool.remove(l1_item)
                 pool.remove(item)
                 print(f"Placed an item in both Bunk Room First Entering locations to satisfy the condition that they have the same item.")
